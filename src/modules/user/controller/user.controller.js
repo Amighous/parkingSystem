@@ -25,7 +25,7 @@ export const updateUser = async(req,res,next)=>{
 ///////////delete//////////
 export const deleteUser = async(req,res,next)=>{
   const { _id } = req.user
-   await userModel.updateOne( {_id} ,{isDeleted:true})
+   await userModel.deleteOne( {_id})
   
     return res.json({ message: 'User deleted successfully' })
 }
