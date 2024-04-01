@@ -1,0 +1,247 @@
+{
+	"info": {
+		"_postman_id": "c93cecc3-c9b8-4cbd-bfb8-c3d9a25453ea",
+		"name": "parkingSystem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31108935"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "mirooeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFobWVkNTgyMzY5QGdtYWlsLmNvbSIsIl9pZCI6IjY2MDk4YTQ2NjQ4NTk5MTBiODAwNzk5MSIsInJvbGUiOiJVc2VyIiwiaW5pYXRlQXQiOjE3MTE5NDc2MjQyMjcsImlhdCI6MTcxMTk0NzYyNCwiZXhwIjoxNzE0NTM5NjI0fQ.UI2ecF8W0wiqGM8ylxFsHC5G_p3tmpkS_BGN01pGeA4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"ahmed582369@gmail.com\",\r\n    \"phoneNumber\":\"01095900000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/user/updateUser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"user",
+								"updateUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePassword",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "mirooeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFobWVkNTgyMzY5QGdtYWlsLmNvbSIsIl9pZCI6IjY2MDk4YTQ2NjQ4NTk5MTBiODAwNzk5MSIsInJvbGUiOiJVc2VyIiwiaW5pYXRlQXQiOjE3MTE5NDc2MjQyMjcsImlhdCI6MTcxMTk0NzYyNCwiZXhwIjoxNzE0NTM5NjI0fQ.UI2ecF8W0wiqGM8ylxFsHC5G_p3tmpkS_BGN01pGeA4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\":\"ahmed111\",\r\n    \"newPassword\":\"ahmed11\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/user/updatePassword",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"user",
+								"updatePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUserData",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "mirooeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFobWVkNTgyMzY5QGdtYWlsLmNvbSIsIl9pZCI6IjY2MDk4YTQ2NjQ4NTk5MTBiODAwNzk5MSIsInJvbGUiOiJVc2VyIiwiaW5pYXRlQXQiOjE3MTE5NDc2MjQyMjcsImlhdCI6MTcxMTk0NzYyNCwiZXhwIjoxNzE0NTM5NjI0fQ.UI2ecF8W0wiqGM8ylxFsHC5G_p3tmpkS_BGN01pGeA4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n     //shpuld to send empty object\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/user/getUserData",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"user",
+								"getUserData"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "signUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"ahmed amir\",\r\n    \"userName\":\"ahmed582\",\r\n    \"email\":\"ahmed582369@gmail.com\",\r\n    \"password\":\"ahmed110\",\r\n    \"cPassword\":\"ahmed110\",\r\n    \"phoneNumber\":\"01095969259\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/auth/signUp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"auth",
+								"signUp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logIn",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"ahmed582369@gmail.com\",\r\n    \"password\":\"ahmed111\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/auth/logIn",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"auth",
+								"logIn"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendCode",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\":\"ahmed582369@gmail.com\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/auth/sendCode",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"auth",
+								"sendCode"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgetPassword",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\":\"ahmed582369@gmail.com\",\r\n\"code\":\"098401\",\r\n\"password\":\"ahmed111\",\r\n\"cPassword\":\"ahmed111\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/auth/forgetPassword",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"auth",
+								"forgetPassword"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
