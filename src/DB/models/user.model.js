@@ -38,13 +38,13 @@ password:{
 },
 role:{
     type:String,
-    default:'User',
-    enum:['User','Admin'] 
+    enum:['User','Admin'],
+    default:'User'
 },
 status:{
     type:String,
-    enum:['offline','online'],
-    default:'offline'
+    enum:['busy','empty'],
+    default:'empty'
 },
 confirmEmail:{
     type:Boolean,
@@ -59,6 +59,7 @@ passwordChangedAt:{
     default: Date.now,
 },
 phoneNumber:String,
+UserMac:String,
 image:Object,
 code:String,
 },

@@ -1,9 +1,16 @@
 import mongoose, {Schema  , model    } from 'mongoose'
 
-const carSchema= new Schema({
+const parkingSchema= new Schema({
 parkingNumber:{
     type:String,
     unique:[true,"parkingNumber must be unique"],
+    required:[true,'parkingNumber is required'],
+    trim:true,
+    lowercase:true
+
+},
+parkingDetails:{
+    type:String,
     required:[true,'parkingNumber is required'],
     trim:true,
     lowercase:true
@@ -14,9 +21,14 @@ parkingPrice:{
     required:[true,'parkingPrice is required'],
 
 },
-isAvilable:{
+status:{
+    type:String,
+    enum:['busy','empty'],
+    default:'empty'
+},
+garageGate:{
     type:Boolean,
-    default:true
+    default:false
 },
 isDeleted:{
     type:Boolean,
@@ -27,5 +39,5 @@ isDeleted:{
 )
 
 
-const carModel=mongoose.model.car||model('Car',carSchema)
-export default carModel
+const parkingModel=mongoose.model.car||model('Parking',parkingSchema)
+export default parkingModel
