@@ -11,24 +11,15 @@ parkingNumber:{
 },
 parkingDetails:{
     type:String,
-    required:[true,'parkingNumber is required'],
+    required:[true,'parkingDetails is required'],
     trim:true,
     lowercase:true
-
-},
-parkingPrice:{
-    type :String,
-    required:[true,'parkingPrice is required'],
 
 },
 status:{
     type:String,
     enum:['busy','empty'],
     default:'empty'
-},
-garageGate:{
-    type:Boolean,
-    default:false
 },
 isDeleted:{
     type:Boolean,
@@ -39,5 +30,5 @@ isDeleted:{
 )
 
 
-const parkingModel=mongoose.model.car||model('Parking',parkingSchema)
+const parkingModel=mongoose.model.parking||model('Parking',parkingSchema)
 export default parkingModel

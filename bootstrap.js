@@ -2,6 +2,7 @@ import cors from 'cors'
 import authRouter from './src/modules/auth/auth.routes.js'
 import userRouter from './src/modules/user/user.routes.js'
 import sensorRouter from './src/modules/sensor/sensor.routes.js'
+import parkingRouter from './src/modules/parking/parking.routes.js'
  import { globalError } from './src/utils/errorHandling.js'
 
 
@@ -42,6 +43,7 @@ const bootstrap=(app,express)=>{
     app.use('/user', userRouter)
     app.use('/auth', authRouter)
     app.use('/sensor' , sensorRouter)
+    app.use('/parking' , parkingRouter)
     
     app.all('*', (req, res, next) => {
     res.send("In-valid Routing Plz check url or method")
