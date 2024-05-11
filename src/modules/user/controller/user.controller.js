@@ -70,3 +70,10 @@ export const updatePassword= async (req, res, next) => {
 }
 
  
+export const getMac=async(req,res,next) => {
+  const { macAddress } = req.body; // Assuming the MAC address is sent in the request body
+   const user = await userModel.create({UserMac :`${macAddress}`})
+  
+   
+  return res.status(200).send('MAC address received successfully.');
+}

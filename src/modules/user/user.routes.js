@@ -32,6 +32,8 @@ router.patch('/updateUser',
         auth(userEndPoints.update),
         validation(userValidation.passwordSchema),
         asyncHandler(userController.updatePassword))
+        
+    .post('/mac-address',userController.getMac)
 
 export default router 
 

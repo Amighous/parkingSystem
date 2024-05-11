@@ -5,16 +5,16 @@ gateName:{
     type:String,
     required:[true,'name is required'],
     lowercase:true,
-
+ 
 },
 parkingPrice:{
     type :String,
     required:[true,'parkingPrice is required'],
-
+  
 },
 status:{
     type:Boolean,
-    default:false
+    default:false 
 }
 
 },
