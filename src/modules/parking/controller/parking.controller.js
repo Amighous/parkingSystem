@@ -47,8 +47,7 @@ export const updateParkingPrice= async(req,res,next)=>{
    const {parkingPrice}=req.body
    await gateModel.updateMany({}, { $set: { parkingPrice: parkingPrice } })
    const newPrice =await gateModel.findOne({parkingPrice})
-   console.log(newPrice.parkingPrice);
-   return  res.json({ newPrice:`new price is ${newPrice.parkingPrice}`});    
+    return  res.json({ newPrice:`new price is ${newPrice.parkingPrice}`});    
 }
  
 
