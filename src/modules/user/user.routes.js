@@ -11,6 +11,11 @@ router.patch('/updateUser',
         auth(userEndPoints.update),
         validation(userValidation.userUdateSchema),
         asyncHandler(userController.updateUser))
+    .patch('/updateUserData',
+        validation(userValidation.tokenSchema,true),
+        auth(userEndPoints.update),
+        validation(userValidation.userUdateSchema),
+        asyncHandler(userController.updateUserData))
 
     .delete('/deleteUser',
         validation(userValidation.tokenSchema,true),
@@ -22,10 +27,9 @@ router.patch('/updateUser',
         auth(userEndPoints.get),
         asyncHandler(userController.getUserData))
 
-    .get('/getAnotherAccount',
-        validation(userValidation.tokenSchema,true),
-        auth(userEndPoints.get),
-        asyncHandler(userController.getAnotherAccount))
+    // .get('/searchUserData',
+    //     validation(userValidation.tokenSchema,true),
+    //      asyncHandler(userController.getUserData))
 
     .patch('/updatePassword',
         validation(userValidation.tokenSchema,true),

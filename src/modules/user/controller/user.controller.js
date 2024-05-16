@@ -18,6 +18,25 @@ export const updateUser = async(req,res,next)=>{
    return res.json({ message: 'User updated successfully', userupdate });
 } 
 
+//end point used by admin
+export const updateUserData = async(req,res,next)=>{
+  const { _id } = req.body
+  const { email , phoneNumber   , userName ,name } = req.body;
+  const user = await userModel.findOne({email})
+
+  //check if email exist
+  if(user.email !=req.user.email ){
+    return next(new Error("email already exist"))
+  }
+
+  const userupdate = await userModel.findByIdAndUpdate(_id, { email , phoneNumber , userName , name  }, { new: true });
+  if(userupdate == null ){
+    return next(new Error("user not updated"))
+  }
+  const returnData= await userModel.findById(_id).select('_id name userName email phoneNumber role')
+   return res.json({ message: 'User updated successfully', returnData });
+} 
+
 
 
 
@@ -32,19 +51,19 @@ export const deleteUser = async(req,res,next)=>{
 
 
 ///////Get user account data //////////
-export const getUserData =async(req,res,next)=>{
-  const { _id } = req.user
-  const user = await userModel.find(_id).select(' -password' )
-  return res.json({message:'done',user})
-}
+// export const getUserData =async(req,res,next)=>{
+//   const { email } = req.user
+//   const user = await userModel.find(email).select(' -password' )
+//   return res.json({message:'done',user})
+// }
 
  
 
-//////Get profile data for another user ////
-export const getAnotherAccount =async(req,res,next)=>{
+//////Get   data   user ////
+export const getUserData =async(req,res,next)=>{
   const { email } = req.body
   const user = await userModel.findOne({ email })
-            .select('status phoneNumber DOB _id userName email')
+            .select(' name phoneNumber _id userName email')
   if (!user){
     return next(new Error("User not found"))
   }

@@ -1,5 +1,6 @@
 import axios from "axios";
 import parkingModel from "../../../DB/models/parking.model.js";
+import gateModel from "../../../DB/models/gate.model.js";
 
   
 
@@ -39,4 +40,34 @@ export const module =async(req, res,next) => {
             free_spacesLength : response.data.free_spaces.length,
             free_spaces : newResult
         });    
+}
+
+//update price
+export const updateParkingPrice= async(req,res,next)=>{
+   const {parkingPrice}=req.body
+   await gateModel.updateMany({}, { $set: { parkingPrice: parkingPrice } })
+   const newPrice =await gateModel.findOne({parkingPrice})
+   console.log(newPrice.parkingPrice);
+   return  res.json({ newPrice:`new price is ${newPrice.parkingPrice}`});    
+}
+ 
+
+//insert new parking
+export const newParking= async(req,res,next)=>{
+   const {gateName}=req.body
+   if(await  gateModel.findOne({gateName:gateName})){
+      return next(new Error("name already exist"))
+   }
+   const neww = await gateModel.findOne({})
+
+    await  gateModel.create({gateName:gateName,parkingPrice:neww.parkingPrice})
+
+    return  res.json({ message:`done `});    
+}
+
+//get price 
+export const parkingPrice= async(req,res,next)=>{
+   const neww = await gateModel.findOne({})
+   return  res.json({ message:`parking price is ${neww.parkingPrice} `});    
+
 }

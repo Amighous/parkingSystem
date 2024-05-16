@@ -58,7 +58,7 @@ export const readSensor=async(req,res,next)=>{
 
   
 
-///readDataBase// TAKE DATA FROM DATA BASE AND SEND IT TO IOT TO TO OPEN OR COLSE
+///readDataBase// TAKE DATA FROM DATA BASE AND SEND IT TO IOT TO TO OPEN OR COLSE 
 export const readDataBase=async(req,res,next)=>{
     const {gate}=req.params
      const result= await gateModel.findOne({gateName:gate})

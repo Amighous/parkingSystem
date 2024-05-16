@@ -6,10 +6,11 @@ export const tokenSchema = joi.object({
 }).required()
  
 export const userUdateSchema = joi.object({
+    _id:generalFileds._id,
     name:generalFileds.name, 
     email:generalFileds.email,
     userName:generalFileds.name,
-    phoneNumber:joi.string().pattern(new RegExp(/^01[0125]\d{8}$/) ).required()
+    phoneNumber:joi.string().pattern(new RegExp(/^01[0125]\d{8}$/) )
     }).required()
 export const userEmailSchema = joi.object({
     email:generalFileds.email

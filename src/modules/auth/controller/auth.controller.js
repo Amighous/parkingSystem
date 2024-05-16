@@ -9,8 +9,13 @@ import {OAuth2Client} from 'google-auth-library'
 export const signUp=  async (req,res,next)=>{
     const {email}=req.body
     const emailExist= await userModel.findOne({email})
+    const {userName}=req.body
+    const userNameExist= await userModel.findOne({userName})
     if(emailExist){
         return next(new Error('email already exist',{cause:409}))
+    }
+    if(userNameExist){
+        return next(new Error('userName already exist',{cause:409}))
     }
 
 
@@ -116,9 +121,8 @@ export const logIn=async (req,res,next)=>{
     
     const token = generateToken({payload:{email,_id:user._id,role:user.role,iniateAt:Date.now()},expiresIn:60*30})
     const refreshToken = generateToken({payload:{email,_id:user._id,role:user.role,iniateAt:Date.now()},expiresIn:60*60*30*24})
-    user.status="online"
-    await user.save()
-return res.status(200).json({message:"done",token,refreshToken})
+     await user.save()
+    return res.status(200).json({message:"done",token,refreshToken})
 }
 
 export const sendCode=async(req,res,next)=>{
