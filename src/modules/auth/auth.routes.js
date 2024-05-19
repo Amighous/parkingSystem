@@ -19,7 +19,7 @@ router.post('/signUp',
             validation(authValidation.tokenSchema),
             asyncHandler(authController.refreshEmail))
 
-    .get('/logIn',     
+    .post('/logIn',     
             validation(authValidation.logInSchema),
             asyncHandler(authController.logIn))
 
