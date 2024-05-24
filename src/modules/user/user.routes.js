@@ -22,7 +22,7 @@ router.patch('/updateUser',
         auth(userEndPoints.delete),
         asyncHandler(userController.deleteUser))
 
-    .get('/getUserData',
+    .post('/getUserData',
         validation(userValidation.tokenSchema,true),
         auth(userEndPoints.get),
         asyncHandler(userController.getUserData))
