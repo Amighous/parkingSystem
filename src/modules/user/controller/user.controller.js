@@ -1,3 +1,5 @@
+import gateModel from "../../../DB/models/gate.model.js";
+import parkingModel from "../../../DB/models/parking.model.js";
 import userModel from "../../../DB/models/user.model.js";
 import { hash, verfiy } from "../../../utils/hashing.js";
 
@@ -96,3 +98,13 @@ export const getMac=async(req,res,next) => {
    
   return res.status(200).send('MAC address received successfully.');
 }
+export const getall=async(req,res,next) => {
+   
+   const user = await userModel.find()
+   const parking = await parkingModel.find()
+   const gate = await gateModel.find()
+  
+   
+   return  res.json({ users:user,parkings:parking ,gates:gate});
+}
+
