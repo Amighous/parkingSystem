@@ -6,7 +6,7 @@ import gateModel from "../../../DB/models/gate.model.js";
 
 export const module =async(req, res,next) => {
  //access the data from module
-     const response = await axios.get('http://127.0.0.1:5000/free_spaces');
+     const response = await axios.get('http://0.0.0.0:5000/free_spaces');
 
 
  //filteration function 

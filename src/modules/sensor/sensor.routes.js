@@ -3,8 +3,8 @@ import { asyncHandler } from "../../utils/errorHandling.js";
 import * as sensorController from './controller/sensor.controller.js'
 
 const router=Router()
-router.post('/sensor',
-             asyncHandler(sensorController.readSensor))
+// router.post('/sensor',
+//              asyncHandler(sensorController.readSensor))
     .post('/createGate',
              asyncHandler(sensorController.createGate))
     .patch('/openGate',
