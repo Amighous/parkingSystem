@@ -6,10 +6,10 @@ import gateModel from "../../../DB/models/gate.model.js";
 
 export const module =async(req, res,next) => {
  //access the data from module
-     const response = await axios.get('http://0.0.0.0:5000/free_spaces');
+     const response = await axios.get('http://192.168.167.111:5000/free_spaces');
 
 
- //filteration function 
+ //filteration function for next use
     function filterArray(array1, array2) {
         
         return array1.filter(item => !array2.includes(item));
