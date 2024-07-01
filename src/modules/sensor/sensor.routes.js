@@ -7,6 +7,8 @@ router.post('/userEnters',
              asyncHandler(sensorController.userEnters))
     .post('/userOuts',
              asyncHandler(sensorController.userOuts))
+    .post('/redirect',
+             asyncHandler(sensorController.redirect))
     .post('/createGate',
              asyncHandler(sensorController.createGate))
     .patch('/openGate',

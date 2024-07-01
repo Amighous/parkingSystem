@@ -1,3 +1,4 @@
+import axios from "axios"
 import gateModel from "../../../DB/models/gate.model.js"
  import userModel from "../../../DB/models/user.model.js"
  
@@ -45,14 +46,10 @@ export const closeGate=async(req,res,next)=>{
 ///read from sensor// CHECK IS USER LOGIN AND CHANGE STATUS TO BUSY
 export const userEnters = async (req, res, next) => {
     const { mac } = req.body;
-    const result = await userModel.findOne({ UserMac: mac });
-
-    if (!result) {
-        return next(new Error("Please login to verify your information"));
-    }
-
+   
+console.log(mac);
     // Update user status and record entry time
-    await userModel.updateOne({ UserMac: mac }, { status: 'busy', timeInParking: Date.now() });
+    await userModel.updateOne({ UserMac: mac }, { status: 'busy', timeInParking: Date.now(),cost:"0" });
 
     // Update gate status (assuming gateModel.updateOne({status:true}) updates gate status)
     await gateModel.updateOne({ status: true });
@@ -60,75 +57,88 @@ export const userEnters = async (req, res, next) => {
     return res.status(200).json({
         message: 'done',
         message2: "user is allowed",
-        message3: "gate opened"
+        message3: "enter gate opened"
     });
 }
 
 
 export const userOuts = async (req, res, next) => {
     const { mac } = req.body;
+     
+    const user = await userModel.findOne({ UserMac: mac });
+ 
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Calculate time spent in parking
+    const timeInParking = user.timeInParking;
+    const date = new Date(timeInParking);
+    const timestamp = date.getTime();
+
 
     
-        const user = await userModel.findOne({ UserMac: mac });
 
-        if (!user) {
-            return next(new Error("Please login to verify your information"));
-        }
-
-        // Calculate time spent in parking
-        const timeInParking = user.timeInParking;
-        const currentTime = Date.now();
-        const timeSpentMillis = currentTime - timeInParking;
-        const timeSpentHours = timeSpentMillis / (1000 * 60 * 60); // Convert milliseconds to hours
-
-        // Fetch pricing details (assuming it's stored in a database)
+    const currentTime = Date.now();
+ 
+    const timeSpentMillis = currentTime - timestamp;
+ 
+    const timeSpentHours = timeSpentMillis / (1000 * 60 *60  ); 
+ 
+ 
         const pricing = await gateModel.findOne();
-        const parkingPricePerHour = pricing.parkingPrice;
-
-        // Calculate cost based on time spent
+        if (!pricing) {
+            return res.status(404).json({ message: 'Pricing details not found' });
+        }
+ 
+        const parkingPricePerHour =  pricing.parkingPrice;
+     // Calculate cost based on time spent
         const cost = parkingPricePerHour * timeSpentHours;
+ 
+    // Update user's cost in the database
+    await userModel.updateOne({ UserMac: mac }, { cost: cost });
+    const usercost =await userModel.findOne({ UserMac: mac });
 
-        // Update user's cost in the database
-        await userModel.updateOne({ UserMac: mac }, { cost: cost });
+ 
+    // Check if user has paid
+  
+    if (usercost.cost > 0) {
 
-        // Check if user has paid
-        const hasPaid = user.cost >= cost; // Assuming user's current cost is updated correctly
+        let timeout = 300; 
+        while (timeout > 0) {
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second
+            timeout--;
 
-        if (!hasPaid) {
-            // Loop until payment is made or timeout
-            let timeout = 300; // Timeout in seconds (adjust as needed)
-            while (timeout > 0) {
-                await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second
-                timeout--;
+             const refreshedUser = await userModel.findOne({ UserMac: mac }); 
+            
+              
 
-                // Refresh user data to check if payment status has changed
-                const refreshedUser = await userModel.findOne({ UserMac: mac });
-                if (refreshedUser.cost >= cost) {
-                    break; // Exit loop if payment is made
-                }
-            }
-
-            // After timeout or payment made, check again
-            if (timeout <= 0 && !hasPaid) {
-                return res.status(400).json({
-                    message: 'Payment timeout exceeded. Please try again.',
-                    paymentRequired: cost - user.cost // Additional amount required to pay
-                });
+             if (refreshedUser.cost == 0) {
+                 break;
             }
         }
 
-        // Update user status and reset entry time
-        await userModel.updateOne({ UserMac: mac }, { status: 'empty', timeInParking: null });
+        // After timeout or payment made, check again
+        if (timeout <= 0 && usercost.cost !=0) {
+            return res.status(400).json({
+                message: 'Payment timeout exceeded. Please try again.',
+             }); 
+        }
+    }
 
-        // Update gate status (assuming gateModel.updateOne({status:true}) updates gate status)
-        await gateModel.updateOne({ status: true });
+    // Update user status and reset entry time
+    await userModel.updateOne({ UserMac: mac }, { status: 'empty', timeInParking: null });
 
-        return res.status(200).json({
-            message: 'done',
-            message2: "user is allowed",
-            message3: "gate opened"
-        });
-     
+    // Update gate status (assuming gateModel.updateOne({status:true}) updates gate status)
+    await gateModel.updateOne({ status: true });
+
+    return res.status(200).json({
+        message: 'done',
+        message2: "user is allowed",
+        message3: "exit gate opened"
+    });
+        
+      
 }
 
   
@@ -144,3 +154,28 @@ export const readDataBase=async(req,res,next)=>{
     return res.status(200).json({message:'done',forSensor})
 
 }
+
+
+  
+export const redirect = async (req, res, next) => {
+    const { mac } = req.body;
+ 
+   
+        const redirectUser = await userModel.findOne({ UserMac: mac });
+ 
+        if (!redirectUser) {
+            return next(new Error("Please login to verify your information"));
+        }
+
+        let response;
+        if (redirectUser.status === 'empty') {
+            response = await axios.post('http://localhost:9000/sensor/userEnters', { mac });
+            return res.status(response.status).json(response.data);
+
+        }  
+        response = await axios.post('http://localhost:9000/sensor/userOuts', { mac });
+          return res.status(response.status).json(response.data);
+   
+     }
+ 
+

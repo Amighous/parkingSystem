@@ -6,6 +6,8 @@ gateName:{
     required:[true,'name is required'],
     lowercase:true,
  
+},  parkingPrice: {
+    type:Number,
 },
 status:{
     type:Boolean,
