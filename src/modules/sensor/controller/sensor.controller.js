@@ -43,17 +43,92 @@ export const closeGate=async(req,res,next)=>{
 
 
 ///read from sensor// CHECK IS USER LOGIN AND CHANGE STATUS TO BUSY
-export const readSensor=async(req,res,next)=>{
-    const {mac}=req.body
-    const result= await userModel.findOne({UserMac:mac})
-    if(!result){
-        return next(new Error("please login to verify your information"))
+export const userEnters = async (req, res, next) => {
+    const { mac } = req.body;
+    const result = await userModel.findOne({ UserMac: mac });
+
+    if (!result) {
+        return next(new Error("Please login to verify your information"));
     }
-    await userModel.updateOne({UserMac:mac},{status:'busy'})
 
-    await gateModel.updateOne({status:true})
-    return res.status(200).json({message:'done',message2:"user is allowed",message3:"gate opened"})
+    // Update user status and record entry time
+    await userModel.updateOne({ UserMac: mac }, { status: 'busy', timeInParking: Date.now() });
 
+    // Update gate status (assuming gateModel.updateOne({status:true}) updates gate status)
+    await gateModel.updateOne({ status: true });
+
+    return res.status(200).json({
+        message: 'done',
+        message2: "user is allowed",
+        message3: "gate opened"
+    });
+}
+
+
+export const userOuts = async (req, res, next) => {
+    const { mac } = req.body;
+
+    
+        const user = await userModel.findOne({ UserMac: mac });
+
+        if (!user) {
+            return next(new Error("Please login to verify your information"));
+        }
+
+        // Calculate time spent in parking
+        const timeInParking = user.timeInParking;
+        const currentTime = Date.now();
+        const timeSpentMillis = currentTime - timeInParking;
+        const timeSpentHours = timeSpentMillis / (1000 * 60 * 60); // Convert milliseconds to hours
+
+        // Fetch pricing details (assuming it's stored in a database)
+        const pricing = await gateModel.findOne();
+        const parkingPricePerHour = pricing.parkingPrice;
+
+        // Calculate cost based on time spent
+        const cost = parkingPricePerHour * timeSpentHours;
+
+        // Update user's cost in the database
+        await userModel.updateOne({ UserMac: mac }, { cost: cost });
+
+        // Check if user has paid
+        const hasPaid = user.cost >= cost; // Assuming user's current cost is updated correctly
+
+        if (!hasPaid) {
+            // Loop until payment is made or timeout
+            let timeout = 300; // Timeout in seconds (adjust as needed)
+            while (timeout > 0) {
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second
+                timeout--;
+
+                // Refresh user data to check if payment status has changed
+                const refreshedUser = await userModel.findOne({ UserMac: mac });
+                if (refreshedUser.cost >= cost) {
+                    break; // Exit loop if payment is made
+                }
+            }
+
+            // After timeout or payment made, check again
+            if (timeout <= 0 && !hasPaid) {
+                return res.status(400).json({
+                    message: 'Payment timeout exceeded. Please try again.',
+                    paymentRequired: cost - user.cost // Additional amount required to pay
+                });
+            }
+        }
+
+        // Update user status and reset entry time
+        await userModel.updateOne({ UserMac: mac }, { status: 'empty', timeInParking: null });
+
+        // Update gate status (assuming gateModel.updateOne({status:true}) updates gate status)
+        await gateModel.updateOne({ status: true });
+
+        return res.status(200).json({
+            message: 'done',
+            message2: "user is allowed",
+            message3: "gate opened"
+        });
+     
 }
 
   

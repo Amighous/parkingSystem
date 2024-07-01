@@ -7,11 +7,6 @@ gateName:{
     lowercase:true,
  
 },
-parkingPrice:{
-    type :String,
-    required:[true,'parkingPrice is required'],
-  
-},
 status:{
     type:Boolean,
     default:false 

@@ -46,6 +46,10 @@ status:{
     enum:['busy','empty'],
     default:'empty'
 },
+cost:{
+    type:String,
+     default:'paied'
+},
 confirmEmail:{
     type:Boolean,
     default:false
@@ -58,6 +62,9 @@ passwordChangedAt:{
     type: Date,
     default: Date.now,
 },
+timeInParking:{
+    type: Date,
+ },
 phoneNumber:String,
 UserMac:String,
 image:Object,
