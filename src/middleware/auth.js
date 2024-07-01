@@ -25,7 +25,7 @@ return async(req,res,next)=>{
         return next(new Error('invalid payload')) 
     }
    
-  const user = await userModele.findById({ _id: payload._id }).select('userName email status role passwordChangedAt')
+  const user = await userModele.findById({ _id: payload._id }).select('userName email status role passwordChangedAt cost')
   if (!user) {
       return next(new Error('account not register',{cause:404}))
   }

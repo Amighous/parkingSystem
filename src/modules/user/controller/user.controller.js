@@ -1,6 +1,7 @@
 import gateModel from "../../../DB/models/gate.model.js";
 import parkingModel from "../../../DB/models/parking.model.js";
 import userModel from "../../../DB/models/user.model.js";
+import visaModel from "../../../DB/models/visatest.js";
 import { hash, verfiy } from "../../../utils/hashing.js";
 
  
@@ -108,3 +109,44 @@ export const getall=async(req,res,next) => {
    return  res.json({ users:user,parkings:parking ,gates:gate});
 }
 
+
+// export const addVisa=async(req,res,next) => {
+   
+//   const { visName , cardNumber   , expireDate ,cvv,amount } = req.body;
+   
+//   const newVisa = new visaModel({ visName, cardNumber, expireDate, cvv,amount });
+//   await newVisa.validate();
+
+//   // Create a new Visa document
+//   const addedVisa = await visaModel.create({ visName, cardNumber, expireDate, cvv,amount });
+
+//   return res.json({ message: 'Visa added successfully', addedVisa });
+//  }
+
+
+
+export const payment=async(req,res,next) => {
+    const {visName , cardNumber   , expireDate ,cvv,}=req.body
+
+   if(!cardNumber ||!visName||!expireDate||!cvv ){
+    return res.json({ message: 'please complete your information' });
+   }
+
+   const visa = await visaModel.findOne({cardNumber:cardNumber})
+
+   if( !visa ||visName !=visa.visName||expireDate !=visa.expireDate|| cvv !=visa.cvv ){
+    return res.json({ message: 'please insert your own visa' });
+   }
+    
+
+      const cost = req.user.cost
+   if(visa.amount < cost){
+    return res.json({ message: 'not enough balance please enter another visa' });
+
+  }
+const newAmount=visa.amount-cost
+await visaModel.findOneAndUpdate({cardNumber:cardNumber},{amount:newAmount})
+await userModel.findOneAndUpdate({_id:`${req.user._id}`},{cost:0})
+
+  return res.json({ message: 'process done'  });
+ } 

@@ -20,4 +20,11 @@ export const passwordSchema = joi.object({
     oldPassword:generalFileds.password.required(),
     newPassword:generalFileds.password.required()
 }).required()
+export const paymentSchema = joi.object({
+    visName:generalFileds.name, 
+    cardNumber:generalFileds.name, 
+    expireDate:generalFileds.name, 
+    cvv:generalFileds.name, 
+
+}).required()
 

@@ -36,8 +36,15 @@ router.patch('/updateUser',
         auth(userEndPoints.update),
         validation(userValidation.passwordSchema),
         asyncHandler(userController.updatePassword))
+
+    .post('/payment',
+        validation(userValidation.tokenSchema,true),
+        auth(userEndPoints.update),
+        validation(userValidation.paymentSchema),
+        asyncHandler(userController.payment))
         
     .post('/mac-address',userController.getMac)
+    // .post('/addVisa',userController.addVisa)
     .get('/getall',userController.getall)
 
 export default router 
