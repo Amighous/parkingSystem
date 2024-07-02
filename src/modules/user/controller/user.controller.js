@@ -46,10 +46,21 @@ export const updateUserData = async(req,res,next)=>{
 
 ///////////delete//////////
 export const deleteUser = async(req,res,next)=>{
-  const { _id } = req.user
-   await userModel.deleteOne( {_id} )
-  
-    return res.json({ message: 'User deleted successfully' })
+  const { _id } = req.body
+  const oldUser = await userModel.findOne({_id:_id})
+
+  if (!oldUser) {
+    return res.json({ message: 'not a true user' })
+
+  }
+   await userModel.deleteOne( {_id:_id} )
+  const user = await userModel.findOne({_id:_id})
+  if (user) {
+    return res.json({ message: 'User not deleted' })
+
+  }
+  return res.json({ message: 'User deleted successfully  ' })
+
 }
 
 

@@ -42,6 +42,9 @@ export const module =async(req, res,next) => {
         });    
 }
 
+
+
+
 //update price
 export const updateParkingPrice= async(req,res,next)=>{
    const {parkingPrice}=req.body

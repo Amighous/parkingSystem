@@ -47,8 +47,7 @@ export const closeGate=async(req,res,next)=>{
 export const userEnters = async (req, res, next) => {
     const { mac } = req.body;
    
-console.log(mac);
-    // Update user status and record entry time
+     // Update user status and record entry time
     await userModel.updateOne({ UserMac: mac }, { status: 'busy', timeInParking: Date.now(),cost:"0" });
 
     // Update gate status (assuming gateModel.updateOne({status:true}) updates gate status)
