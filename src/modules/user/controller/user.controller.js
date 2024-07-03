@@ -42,7 +42,7 @@ export const updateUserData = async(req,res,next)=>{
 
 
 
-
+ 
 
 ///////////delete//////////
 export const deleteUser = async(req,res,next)=>{

@@ -168,11 +168,11 @@ export const redirect = async (req, res, next) => {
 
         let response;
         if (redirectUser.status === 'empty') {
-            response = await axios.post('http://localhost:9000/sensor/userEnters', { mac });
+            response = await axios.post('https://parkingsystem-tp3t.onrender.com/sensor/userEnters', { mac });
             return res.status(response.status).json(response.data);
 
         }  
-        response = await axios.post('http://localhost:9000/sensor/userOuts', { mac });
+        response = await axios.post('https://parkingsystem-tp3t.onrender.com/sensor/userOuts', { mac });
           return res.status(response.status).json(response.data);
    
      }

@@ -10,7 +10,7 @@ export const moduleContinuous = async (req, res, next) => {
     const executeTask = async () => {
        
            // Access the data from module
-           const response = await axios.get('http://192.168.1.4:5000/free_spaces');
+           const response = await axios.get('http://127.0.0.1:5000/free_spaces');
 
            // Filteration function for next use
            function filterArray(array1, array2) {
@@ -85,6 +85,18 @@ export const parkingPrice= async(req,res,next)=>{
 
 }
 export const getFreeSpaces= async(req,res,next)=>{
+
+   // Get the places which are empty and get only the places of it, not all collection
+   const result = await parkingModel.find({ status: 'empty' });
+   const newResult = result.map(item => item.parkingNumber);
+
+   return  res.json({ message:"get free spaces",
+            free_spacesLength: newResult.length,
+            free_spaces: newResult
+      });    
+
+}
+export const bestCell= async(req,res,next)=>{
 
    // Get the places which are empty and get only the places of it, not all collection
    const result = await parkingModel.find({ status: 'empty' });
