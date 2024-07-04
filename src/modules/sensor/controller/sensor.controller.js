@@ -82,7 +82,7 @@ export const userOuts = async (req, res, next) => {
  
     const timeSpentMillis = currentTime - timestamp;
  
-    const timeSpentHours = timeSpentMillis / (1000 * 60 *60  ); 
+    const timeSpentHours = timeSpentMillis / (1000 * 60    ); 
  
  
         const pricing = await gateModel.findOne();
@@ -92,9 +92,8 @@ export const userOuts = async (req, res, next) => {
  
         const parkingPricePerHour =  pricing.parkingPrice;
      // Calculate cost based on time spent
-        const cost = parkingPricePerHour * timeSpentHours;
- 
-    // Update user's cost in the database
+        const cost = parseInt(parkingPricePerHour * timeSpentHours);
+     // Update user's cost in the database
     await userModel.updateOne({ UserMac: mac }, { cost: cost });
     const usercost =await userModel.findOne({ UserMac: mac });
 
