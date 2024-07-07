@@ -13,6 +13,8 @@ router.get('/free_spaces',
               asyncHandler(parkingController.parkingPrice))
     .get('/getFreeSpaces',
               asyncHandler(parkingController.getFreeSpaces))
+    .get('/bestCell',
+              asyncHandler(parkingController.bestCell))
 export default router     
 
 
